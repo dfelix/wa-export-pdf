@@ -1,6 +1,15 @@
 name: tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]     # other branches are tested through their pull request
+  pull_request:
+  workflow_dispatch:     # manual runs from the Actions tab
+
+concurrency:
+  # A newer push to the same PR/branch cancels the run it supersedes.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
