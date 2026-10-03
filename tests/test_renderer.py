@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
-from pathlib import Path
-
 from wa_export_pdf.config import PAGE_SIZES, RenderOptions
 from wa_export_pdf.emoji import emoji_only_count
 from wa_export_pdf.models import (
@@ -11,7 +9,7 @@ from wa_export_pdf.models import (
 )
 from wa_export_pdf.parser import ParseOptions, parse_file, parse_lines
 from wa_export_pdf.renderer import HtmlRenderer, format_text, load_theme
-from wa_export_pdf.renderer.html import DayView, MessageView, SystemView, fit_media, format_duration, format_size
+from wa_export_pdf.renderer.html import DayView, MessageView, fit_media, format_duration, format_size
 from wa_export_pdf.renderer.theme import ThemeError, available_themes
 
 from .conftest import SAMPLE
@@ -163,15 +161,6 @@ def test_no_invented_reactions_or_ticks():
 def test_ticks_are_opt_in():
     html = _render_sample(RenderOptions(ticks=True))
     assert 'class="ticks"' in html
-
-
-def test_date_filter():
-    msgs = [_msg(1, "Ana", 0, day=14), _msg(2, "Ana", 0, day=15), _msg(3, "Ana", 0, day=16)]
-    from datetime import date
-
-    r = HtmlRenderer(_conv(msgs), load_theme("whatsapp"), RenderOptions(date_from=date(2026, 9, 15), date_to=date(2026, 9, 15)))
-    views = [i for i in r.build_items() if isinstance(i, MessageView)]
-    assert [v.msg.id for v in views] == ["m2"]
 
 
 def test_chunks_split_on_day_boundaries():

@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import logging
 import platform
 import subprocess
 import sys
-from datetime import date
 from pathlib import Path
 
 from . import __version__
@@ -15,16 +15,17 @@ from .config import PAGE_SIZES, RenderOptions
 from .media import QUALITY_PRESETS, find_ffmpeg
 from .parser import DiscoveryError, ParseOptions
 from .pdf import BrowserError
+from .period import Bound, Period, PeriodError, parse_bound
 from .renderer.theme import FONTS_DIR, ThemeError, available_themes
 
 log = logging.getLogger("wa_export_pdf")
 
 
-def _date(value: str) -> date:
+def _bound(value: str) -> Bound:
     try:
-        return date.fromisoformat(value)
-    except ValueError as exc:
-        raise argparse.ArgumentTypeError(f"invalid date '{value}', expected YYYY-MM-DD") from exc
+        return parse_bound(value)
+    except PeriodError as exc:
+        raise argparse.ArgumentTypeError(str(exc)) from exc
 
 
 def _screens(value: str) -> int | None:
@@ -71,8 +72,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     content = p.add_argument_group("content")
     content.add_argument("--me", help="your name as it appears in the chat (messages shown on the right)")
-    content.add_argument("--from", dest="date_from", type=_date, help="first day to include (YYYY-MM-DD)")
-    content.add_argument("--to", dest="date_to", type=_date, help="last day to include (YYYY-MM-DD)")
+    content.add_argument("--from", dest="date_from", type=_bound, metavar="DATE[ TIME]",
+                         help="start of the period, inclusive: YYYY-MM-DD or 'YYYY-MM-DD HH:MM[:SS]'")
+    content.add_argument("--to", dest="date_to", type=_bound, metavar="DATE[ TIME]",
+                         help="end of the period, inclusive (a date covers the whole day, "
+                              "HH:MM the whole minute)")
     content.add_argument("--date-order", choices=["auto", "dmy", "mdy", "ymd"], default="auto",
                          help="date format of the export (default: detect)")
     content.add_argument("--lang", help="UI language for labels (pt, pt-BR, en, es, fr, de, it); default: detect")
@@ -156,11 +160,9 @@ def run_check() -> int:
         ok = False
     ff = find_ffmpeg(None)
     print(f"FFmpeg      {'OK  ' + str(ff) if ff else 'not found (optional: video frames, waveforms)'}")
-    try:
-        import pypdfium2  # noqa: F401
-
+    if importlib.util.find_spec("pypdfium2"):
         print("pypdfium2   OK (document previews, debug screenshots)")
-    except ImportError:
+    else:
         print("pypdfium2   not installed (optional: pip install pypdfium2)")
     fonts = sorted(p.name for p in FONTS_DIR.glob("*.ttf"))
     print(f"Fonts       {', '.join(fonts)}")
@@ -197,6 +199,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.debug or args.html_only or args.debug_dir:
         debug_dir = args.debug_dir or output.with_name(output.stem + "-debug")
 
+    try:
+        period = Period(args.date_from, args.date_to)
+    except PeriodError as exc:
+        parser.error(str(exc))
+
     from .pipeline import ConvertOptions, convert
 
     options = ConvertOptions(
@@ -211,10 +218,9 @@ def main(argv: list[str] | None = None) -> int:
             include_media=args.include_media,
             chunk_size=args.chunk_size,
             title=args.title,
-            date_from=args.date_from,
-            date_to=args.date_to,
             extra_css=[c.resolve() for c in args.extra_css],
         ),
+        period=period,
         quality=args.quality,
         ffmpeg=args.ffmpeg,
         waveforms=args.waveforms,

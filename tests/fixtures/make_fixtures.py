@@ -9,7 +9,6 @@ committed so the test-suite itself does not need FFmpeg to run.
 
 from __future__ import annotations
 
-import math
 import subprocess
 import sys
 from pathlib import Path

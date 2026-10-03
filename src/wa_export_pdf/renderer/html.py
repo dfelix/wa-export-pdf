@@ -18,7 +18,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Any, ClassVar, Iterator
+from typing import Any, ClassVar
 
 from jinja2 import ChoiceLoader, Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup
@@ -209,16 +209,6 @@ class HtmlRenderer:
 
     # -- view model -----------------------------------------------------------
 
-    def _visible_messages(self) -> Iterator[Message]:
-        f, to = self.options.date_from, self.options.date_to
-        for m in self.conv.messages:
-            d = m.day
-            if f and d < f:
-                continue
-            if to and d > to:
-                continue
-            yield m
-
     def _time(self, m: Message) -> str:
         return self.t.time(m.timestamp, self.conv.uses_12h_clock)
 
@@ -227,7 +217,7 @@ class HtmlRenderer:
         items: list[Any] = []
         prev: Message | None = None
         prev_view: MessageView | None = None
-        for m in self._visible_messages():
+        for m in self.conv.messages:
             new_day = prev is None or m.day != prev.day
             if new_day:
                 items.append(DayView(m.day, self.t.long_date(m.day), self.t.month_year(m.day)))
