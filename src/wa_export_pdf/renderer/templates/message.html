@@ -1,0 +1,249 @@
+{% import "icons.html" as icons %}
+
+{# ---- timestamp ------------------------------------------------------------ #}
+{% macro meta_content(v) -%}
+{% if v.msg.edited %}<span class="edited">{{ t('edited') }}</span>{% endif %}<span class="time">{{ v.time }}</span>{% if opts.ticks and v.side == 'out' %}<span class="ticks">{{ icons.ticks() }}</span>{% endif %}
+{%- endmacro %}
+
+{% macro meta(v, cls='') -%}
+<span class="meta {{ cls }}">{{ meta_content(v) }}</span>
+{%- endmacro %}
+
+{% macro spacer(v) -%}
+<span class="meta-spacer" aria-hidden="true">{{ meta_content(v) }}</span>
+{%- endmacro %}
+
+{# ---- pieces --------------------------------------------------------------- #}
+{% macro sender(v) -%}
+{% if v.show_name %}<span class="sender name-{{ v.name_color }}">{{ v.msg.sender }}</span>{% endif %}
+{%- endmacro %}
+
+{% macro reply(v) -%}
+{% if v.msg.reply %}
+{% set r = v.msg.reply %}
+{% set p = conv.participants.get(r.sender or '') %}
+<div class="quote name-{{ p.color_index if p else 0 }}">
+  <span class="bar"></span>
+  <div class="q-body">
+    <div class="q-author">{{ (t('you') if p and p.is_me else r.sender) or '' }}</div>
+    <div class="q-text" dir="auto">{{ r.text }}</div>
+  </div>
+</div>
+{% endif %}
+{%- endmacro %}
+
+{% macro text_block(v) -%}
+<div class="text" dir="auto">{{ v.text_html }}{{ spacer(v) }}</div>
+{%- endmacro %}
+
+{% macro missing_media(v, icon=True) -%}
+<div class="media-missing">
+  {% if icon %}{{ icons.broken_image() }}{% endif %}
+  {% if v.msg.media and v.msg.media.filename %}<div class="fname">{{ v.msg.media.filename }}</div>{% endif %}
+  <div class="why">{{ v.placeholder or t('missing_file') }}</div>
+</div>
+{%- endmacro %}
+
+{# ---- media: photo / video / gif ------------------------------------------ #}
+{% macro visual_media(v) -%}
+<div class="media-frame {{ 'crop' if v.box.crop }}" style="width:{{ v.box.width }}px;height:{{ v.box.height }}px">
+  {% if v.media_url %}
+    <img class="thumb" src="{{ v.media_url }}" alt="">
+    {% if v.kind == 'video' %}
+      <span class="play">{{ icons.play() }}</span>
+    {% elif v.kind == 'gif' %}
+      <span class="gif-badge">GIF</span>
+    {% endif %}
+  {% elif v.kind in ('video', 'gif') and not v.missing %}
+    {# file exists but no frame could be extracted (no FFmpeg) #}
+    <div class="media-missing">
+      {% if v.kind == 'gif' %}<span class="gif-badge" style="position:static;margin:0">GIF</span>{% else %}<span class="play" style="position:static;margin:0">{{ icons.play() }}</span>{% endif %}
+      <div class="fname">{{ v.msg.media.filename }}</div>
+      {% if v.size %}<div class="why">{{ v.size }}</div>{% endif %}
+    </div>
+  {% else %}
+    {{ missing_media(v) }}
+  {% endif %}
+  {% if v.kind == 'video' and (v.duration or v.media_url) %}
+    {% if not v.caption %}<span class="shade"></span>{% endif %}
+    <span class="video-info">{{ icons.videocam() }}{{ v.duration }}</span>
+  {% elif not v.caption and v.media_url %}
+    <span class="shade"></span>
+  {% endif %}
+</div>
+{% if v.caption %}
+  <div class="caption">{{ text_block(v) }}</div>
+  {{ meta(v) }}
+{% else %}
+  {{ meta(v, 'overlay') }}
+{% endif %}
+{%- endmacro %}
+
+{# ---- voice notes and audio files ------------------------------------------ #}
+{% macro voice(v) -%}
+{% set avatar_side = 'left' if v.side == 'in' else 'right' %}
+<div class="voice">
+  {% if avatar_side == 'left' %}
+    {% if v.kind == 'voice' %}
+      <span class="avatar-wrap"><span class="avatar">{{ icons.avatar() }}</span><span class="mic">{{ icons.mic() }}</span></span>
+    {% else %}
+      <span class="audio-icon">{{ icons.headphones() }}</span>
+    {% endif %}
+  {% endif %}
+  <span class="play-btn">{{ icons.play() }}</span>
+  <div class="track">
+    {% if v.kind == 'voice' %}
+      {% if v.waveform %}
+        <div class="waveform">
+          {% for a in v.waveform %}<span class="bar" style="height:{{ [3, (a * 26) | round(1)] | max }}px"></span>{% endfor %}
+          <span class="dot"></span>
+        </div>
+      {% else %}
+        <div class="waveform flat">{% for i in range(44) %}<span class="bar"></span>{% endfor %}<span class="dot"></span></div>
+      {% endif %}
+    {% else %}
+      <div class="audio-line"><span class="dot"></span></div>
+    {% endif %}
+    <div class="v-duration">{{ v.duration }}{% if v.missing %} · {{ v.placeholder or t('missing_file') }}{% endif %}</div>
+  </div>
+  {% if avatar_side == 'right' %}
+    {% if v.kind == 'voice' %}
+      <span class="avatar-wrap"><span class="avatar">{{ icons.avatar() }}</span><span class="mic">{{ icons.mic() }}</span></span>
+    {% else %}
+      <span class="audio-icon">{{ icons.headphones() }}</span>
+    {% endif %}
+  {% endif %}
+</div>
+{% if v.caption %}<div class="caption">{{ text_block(v) }}</div>{% endif %}
+{{ meta(v) }}
+{%- endmacro %}
+
+{# ---- documents ---------------------------------------------------------------- #}
+{% macro document(v) -%}
+<div class="doc">
+  {% if v.media_url %}
+    <img class="doc-preview" src="{{ v.media_url }}" alt="" style="height:{{ v.box.height }}px">
+  {% endif %}
+  <div class="doc-row">
+    <span class="doc-icon {{ v.doc_icon }}">{{ icons.document(v.doc_icon) }}<span class="ext">{{ v.doc_ext[:4] }}</span></span>
+    <div class="doc-name">{{ v.doc_name or v.msg.media.filename }}</div>
+  </div>
+</div>
+<div class="doc-meta-line">{{ v.doc_meta }}{% if v.missing %}{{ ' • ' if v.doc_meta }}{{ v.placeholder or t('missing_file') }}{% endif %}{{ spacer(v) }}</div>
+{% if v.caption %}<div class="caption">{{ text_block(v) }}</div>{% endif %}
+{{ meta(v) }}
+{%- endmacro %}
+
+{# ---- contact card ------------------------------------------------------------- #}
+{% macro contact(v) -%}
+<div class="contact-card">
+  <span class="avatar">{{ icons.avatar() }}</span>
+  <div>
+    <div class="c-name" dir="auto">{{ v.doc_name }}</div>
+    {% if v.msg.media and v.msg.media.contact_phones %}<div class="c-phone">{{ v.msg.media.contact_phones[0] }}</div>{% endif %}
+    {% if v.missing %}<div class="c-phone">{{ v.placeholder or t('missing_file') }}</div>{% endif %}
+  </div>
+</div>
+{{ meta(v, 'flow') }}
+<div class="contact-actions">{{ t('message_contact') }}</div>
+{%- endmacro %}
+
+{# ---- location ------------------------------------------------------------------- #}
+{% macro location(v) -%}
+{% set loc = v.msg.location %}
+<div class="location-map">{{ icons.generic_map() }}{{ icons.map_pin() }}</div>
+<div class="location-coords">
+  <div class="loc-title">{{ loc.name or t('location') }}</div>
+  {% if loc.latitude is not none %}<div>{{ '%.5f' | format(loc.latitude) }}, {{ '%.5f' | format(loc.longitude) }}</div>{% endif %}
+  {% if loc.url %}<a href="{{ loc.url }}">{{ t('open_map') }}</a>{% endif %}
+</div>
+{{ meta(v) }}
+{%- endmacro %}
+
+{# ---- poll --------------------------------------------------------------------- #}
+{% macro poll(v) -%}
+{% set p = v.msg.poll %}
+<div class="poll">
+  <div class="p-question" dir="auto">{{ p.question }}</div>
+  <div class="p-hint">{{ icons.poll_hint() }}{{ t('poll_hint') }}</div>
+  {% for o in p.options %}
+  <div class="p-option">
+    <span class="p-radio"></span>
+    <div class="p-main">
+      <div class="p-row"><span class="p-text" dir="auto">{{ o.text }}</span>{% if o.votes is not none %}<span class="p-votes">{{ o.votes }}</span>{% endif %}</div>
+      <div class="p-track"><div class="p-fill" style="width:{{ ((o.votes or 0) / v.poll_max * 100) | round(1) if v.poll_max else 0 }}%"></div></div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{{ meta(v, 'flow') }}
+<div class="p-footer">{{ t('view_votes') }}</div>
+{%- endmacro %}
+
+{# ---- the bubble ----------------------------------------------------------------- #}
+{% macro bubble(v) -%}
+{% set k = v.kind %}
+{% set visual = k in ('image', 'video', 'gif') or (k == 'sticker' and not v.media_url) %}
+{% set cls = ['bubble', k ~ '-bubble'] %}
+{% if visual %}{% set _ = cls.append('media-bubble') %}{% endif %}
+{% if v.bubbleless %}{% set _ = cls.append('bubbleless') %}{% elif v.first %}{% set _ = cls.append('has-tail') %}{% endif %}
+{% if v.jumbo %}{% set _ = cls.append('jumbo') %}{% set _ = cls.append('jumbo-' ~ v.jumbo) %}{% endif %}
+{% if k in ('voice', 'audio') and v.side == 'out' %}{% set _ = cls.append('out-avatar') %}{% endif %}
+<div class="{{ cls | join(' ') }}">
+  {% if v.first and not v.bubbleless %}<span class="tail">{{ icons.tail(v.side) }}</span>{% endif %}
+  {{ sender(v) }}
+  {{ reply(v) }}
+  {% if k == 'text' %}
+    {{ text_block(v) }}
+    {{ meta(v) }}
+  {% elif k == 'sticker' and v.media_url %}
+    <div class="sticker" style="width:{{ v.box.width }}px;height:{{ v.box.height }}px"><img src="{{ v.media_url }}" alt=""></div>
+    {{ meta(v, 'sticker-meta') }}
+  {% elif visual %}
+    {{ visual_media(v) }}
+  {% elif k in ('voice', 'audio') %}
+    {{ voice(v) }}
+  {% elif k == 'document' %}
+    {{ document(v) }}
+  {% elif k == 'contact' %}
+    {{ contact(v) }}
+  {% elif k == 'location' and v.msg.location %}
+    {{ location(v) }}
+  {% elif k == 'poll' and v.msg.poll %}
+    {{ poll(v) }}
+  {% elif k == 'call' %}
+    {% set missed = (v.msg.metadata.get('call') or '').startswith('missed') %}
+    <div class="call {{ 'missed' if missed }}">
+      <span class="call-icon">{% if 'video' in (v.msg.metadata.get('call') or '') %}{{ icons.video_call(missed) }}{% else %}{{ icons.phone(missed) }}{% endif %}</span>
+      <span class="call-label">{{ v.placeholder }}</span>{{ spacer(v) }}
+    </div>
+    {{ meta(v) }}
+  {% elif k == 'deleted' %}
+    <div class="text"><span class="placeholder-line">{{ icons.deleted() }}<span class="label">{{ v.placeholder }}</span></span>{{ spacer(v) }}</div>
+    {{ meta(v) }}
+  {% elif k == 'view_once' %}
+    <div class="text"><span class="placeholder-line">{{ icons.view_once() }}<span class="label">{{ v.placeholder }}</span></span>{{ spacer(v) }}</div>
+    {{ meta(v) }}
+  {% elif k == 'unknown' and v.msg.media and v.msg.media.omitted %}
+    <div class="text"><span class="placeholder-line">{{ icons.broken_image() }}<span class="label">{{ v.placeholder }}</span></span>{{ spacer(v) }}</div>
+    {{ meta(v) }}
+  {% else %}
+    <div class="text"><span class="placeholder-line">{{ icons.info() }}<span class="label">{{ v.placeholder or v.msg.text }}</span></span>{{ spacer(v) }}</div>
+    {{ meta(v) }}
+  {% endif %}
+</div>
+{%- endmacro %}
+
+{% macro message_row(v) -%}
+<div class="row {{ v.side }}{{ ' first' if v.first }}{{ ' last' if v.last }}{{ ' long' if v.long }}" id="{{ v.msg.id }}">
+  {% if conv.is_group and v.side == 'in' %}
+  <div class="avatar-slot">{% if v.show_avatar %}<span class="avatar">{{ icons.avatar() }}</span>{% endif %}</div>
+  {% endif %}
+  <div class="msg">
+    {{ bubble(v) }}
+    {% if v.msg.reactions %}
+    <div class="reactions">{% for r in v.msg.reactions %}<span class="emoji">{{ r.emoji }}</span>{% endfor %}{% set total = v.msg.reactions | sum(attribute='count') %}{% if total > 1 %}<span class="count">{{ total }}</span>{% endif %}</div>
+    {% endif %}
+  </div>
+</div>
+{%- endmacro %}

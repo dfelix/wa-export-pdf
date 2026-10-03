@@ -1,0 +1,71 @@
+/* Page, chat panel and pagination rules. */
+
+html {
+  background-color: var(--chat-bg);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+html.doodle {
+  background-image: var(--doodle);
+  background-size: var(--doodle-size) var(--doodle-size);
+  background-repeat: repeat;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+a { color: var(--link); text-decoration: none; }
+
+.emoji {
+  font-family: var(--font-emoji);
+  font-style: normal;
+  font-weight: normal;
+  /* Emoji in WhatsApp are slightly bigger than the text around them. */
+  font-size: 1.2em;
+  line-height: 1;
+  vertical-align: -0.12em;
+}
+
+.chat {
+  padding: 8px 0 14px;
+}
+
+/* One row per message. Rows never split across pages unless a single
+   message is taller than a page (Chromium then splits it and
+   box-decoration-break keeps both fragments looking like a bubble). */
+.row {
+  display: flex;
+  padding: 0 var(--lane-pad);
+  margin-top: var(--row-gap);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.row.first { margin-top: var(--group-gap); }
+.row.long { break-inside: auto; page-break-inside: auto; }
+.row.in { justify-content: flex-start; }
+.row.out { justify-content: flex-end; }
+
+.msg {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--bubble-max);
+  min-width: 0;
+}
+.row.in .msg { align-items: flex-start; }
+.row.out .msg { align-items: flex-end; }
+
+.text, .caption .text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  orphans: 2;
+  widows: 2;
+}

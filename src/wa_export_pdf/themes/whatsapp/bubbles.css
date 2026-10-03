@@ -1,0 +1,145 @@
+/* Message bubbles, tails, sender names, timestamps and ticks. */
+
+.bubble {
+  position: relative;
+  padding: var(--bubble-padding);
+  border-radius: var(--bubble-radius);
+  box-shadow: var(--bubble-shadow);
+  background: var(--bubble-in);
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.row.out .bubble { background: var(--bubble-out); }
+
+/* The first message of a group has a tail and a square corner where the
+   tail joins, exactly like WhatsApp. Following messages are plain. */
+.row.in.first .bubble.has-tail { border-top-left-radius: 0; }
+.row.out.first .bubble.has-tail { border-top-right-radius: 0; }
+
+.tail {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 13px;
+  display: block;
+}
+.row.in .tail { left: -8px; color: var(--bubble-in); }
+.row.out .tail { right: -8px; color: var(--bubble-out); }
+.tail svg { display: block; width: 8px; height: 13px; }
+.tail .tail-shadow { fill: rgba(11, 20, 26, 0.13); }
+.tail .tail-fill { fill: currentColor; }
+
+/* Sender name (groups) */
+.sender {
+  display: block;
+  font-size: var(--font-size-name);
+  font-weight: 500;
+  line-height: 22px;
+  margin-top: -3px;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.bubble.media-bubble .sender { padding: 0 4px 0 6px; margin-top: 0; }
+.name-0 { color: var(--name-0); }   .name-1 { color: var(--name-1); }
+.name-2 { color: var(--name-2); }   .name-3 { color: var(--name-3); }
+.name-4 { color: var(--name-4); }   .name-5 { color: var(--name-5); }
+.name-6 { color: var(--name-6); }   .name-7 { color: var(--name-7); }
+.name-8 { color: var(--name-8); }   .name-9 { color: var(--name-9); }
+.name-10 { color: var(--name-10); } .name-11 { color: var(--name-11); }
+.name-12 { color: var(--name-12); } .name-13 { color: var(--name-13); }
+.name-14 { color: var(--name-14); } .name-15 { color: var(--name-15); }
+.name-16 { color: var(--name-16); } .name-17 { color: var(--name-17); }
+.name-18 { color: var(--name-18); } .name-19 { color: var(--name-19); }
+
+/* Timestamp ("meta") --------------------------------------------------------
+   WhatsApp floats the time in the bottom-right corner and lets the last
+   line of text flow next to it. We reproduce that with an invisible copy
+   of the meta at the end of the text (the "spacer"): if it does not fit
+   on the last line it wraps, and the bubble grows by one line. */
+.meta {
+  position: absolute;
+  right: 7px;
+  bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--font-size-meta);
+  line-height: 15px;
+  color: var(--meta-in);
+  white-space: nowrap;
+}
+.row.out .meta { color: var(--meta-out); }
+.meta-spacer {
+  display: inline-flex;
+  visibility: hidden;
+  gap: 3px;
+  font-size: var(--font-size-meta);
+  line-height: 15px;
+  padding-left: 8px;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+/* Meta in normal flow (polls, contact cards): own line, right aligned. */
+.meta.flow {
+  position: static;
+  justify-content: flex-end;
+  padding: 2px 4px 3px 0;
+}
+/* Right-to-left paragraphs (Arabic, Hebrew...) end on the left, so the
+   time cannot share their last line: give it a line of its own. */
+.text:dir(rtl) > .meta-spacer {
+  display: block;
+  height: 15px;
+  padding: 0;
+}
+.meta .edited, .meta-spacer .edited { margin-right: 2px; }
+.ticks { display: inline-block; width: 16px; height: 11px; color: var(--tick-read); }
+.ticks svg { display: block; width: 16px; height: 11px; }
+
+/* Bubble-less messages (stickers) */
+.row .bubble.bubbleless {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Jumbo emoji: messages made of 1-3 emoji only */
+.bubble.jumbo .text { line-height: 1.15; }
+.bubble.jumbo .emoji { vertical-align: 0; font-size: 1em; }
+.bubble.jumbo-1 .text { font-size: 48px; }
+.bubble.jumbo-2 .text { font-size: 40px; }
+.bubble.jumbo-3 .text { font-size: 32px; }
+.bubble.jumbo .meta-spacer { font-size: var(--font-size-meta); }
+
+/* Reactions (only when present in the source data) */
+.reactions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: -6px;
+  margin-bottom: 2px;
+  padding: 1px 6px;
+  border-radius: 12px;
+  background: var(--reaction-bg);
+  border: 2px solid var(--reaction-border);
+  box-shadow: var(--bubble-shadow);
+  font-size: 13px;
+  line-height: 18px;
+  position: relative;
+  z-index: 1;
+}
+.row.in .reactions { margin-left: 8px; }
+.row.out .reactions { margin-right: 8px; }
+.reactions .count { color: var(--text-secondary); font-size: 12px; margin-left: 2px; }
+
+/* Group avatars (default silhouette: the export has no profile pictures) */
+.avatar-slot { width: 36px; flex: 0 0 36px; }
+.avatar-slot .avatar { width: 28px; height: 28px; margin-top: 0; }
+.avatar { display: block; border-radius: 50%; overflow: hidden; }
+.avatar svg { display: block; width: 100%; height: 100%; }

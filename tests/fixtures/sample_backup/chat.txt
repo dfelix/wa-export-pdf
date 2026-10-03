@@ -1,0 +1,48 @@
+14/09/26, 09:12 - As mensagens e as chamadas são encriptadas ponto a ponto. Só as pessoas nesta conversa as podem ler, ouvir ou partilhar. *Saber mais*
+14/09/26, 09:12 - Joana Silva: Olá Rui! Tudo bem? 😊
+14/09/26, 09:13 - Joana Silva: Já viste as fotografias da viagem?
+14/09/26, 09:15 - Rui Costa: Olá Joana! Tudo ótimo 👍🏽
+Ainda não, envia-me por favor.
+14/09/26, 09:15 - Rui Costa: *Negrito*, _itálico_, ~riscado~ e ```monoespaçado```
+14/09/26, 09:16 - Joana Silva: 😂
+14/09/26, 09:16 - Joana Silva: 🎉🎂🥳
+14/09/26, 09:20 - Joana Silva: Vê aqui o roteiro: https://www.example.com/viagem?dia=1&mapa=sim
+14/09/26, 09:21 - Rui Costa: Combinado, até já! <Esta mensagem foi editada>
+14/09/26, 09:22 - Joana Silva: Eliminou esta mensagem
+14/09/26, 09:23 - Rui Costa: Esta mensagem foi eliminada
+15/09/26, 18:40 - Joana Silva: ‎image.jpg (ficheiro anexado)
+O pôr do sol na praia 🌅
+15/09/26, 18:41 - Joana Silva: ‎IMG-20260915-WA0002.jpg (ficheiro anexado)
+15/09/26, 18:45 - Rui Costa: Que bonito! Lembra-me aquela frase: «A vida é feita de pequenos nadas.» São José, Évora, Açores, Ñandú, Straße, Ærø.
+15/09/26, 18:46 - Rui Costa: Línguas: مرحبا بالعالم · 你好，世界 · こんにちは世界 · Привет, мир · Γειά σου Κόσμε · שלום עולם
+16/09/26, 10:02 - Rui Costa: ‎IMG-20260916-WA0003.jpg (ficheiro anexado)
+Foto rodada pelo EXIF
+16/09/26, 10:03 - Rui Costa: ‎IMG-20260916-WA0004.png (ficheiro anexado)
+16/09/26, 10:03 - Rui Costa: ‎IMG-20260916-WA0005.webp (ficheiro anexado)
+16/09/26, 10:05 - Joana Silva: ‎video.mp4 (ficheiro anexado)
+Vídeo da chegada
+16/09/26, 10:06 - Joana Silva: ‎VID-20260918-WA0010.mp4 (ficheiro anexado)
+16/09/26, 10:10 - Rui Costa: ‎audio.opus (ficheiro anexado)
+16/09/26, 10:12 - Joana Silva: ‎AUD-20260918-WA0012.m4a (ficheiro anexado)
+17/09/26, 08:30 - Joana Silva: ‎document.pdf (ficheiro anexado)
+document.pdf
+17/09/26, 08:31 - Rui Costa: ‎STK-20260917-WA0006.webp (ficheiro anexado)
+17/09/26, 08:32 - Joana Silva: ‎animation.gif (ficheiro anexado)
+17/09/26, 08:33 - Rui Costa: ‎Marta Ferreira.vcf (ficheiro anexado)
+17/09/26, 08:34 - Joana Silva: localização: https://maps.google.com/?q=38.7223,-9.1393
+17/09/26, 08:35 - Rui Costa: ‎IMG-20260917-WA0008.jpg (ficheiro anexado)
+17/09/26, 08:36 - Joana Silva: ‎IMG-20260917-WA0009.jpg (ficheiro anexado)
+17/09/26, 08:37 - Joana Silva: <Ficheiro não revelado>
+17/09/26, 08:38 - Rui Costa: SONDAGEM:
+Onde jantamos?
+OPÇÃO: Marisqueira (2 votos)
+OPÇÃO: Pizaria (1 voto)
+OPÇÃO: Em casa (0 votos)
+18/09/26, 22:15 - Joana Silva: Esta é uma mensagem longa para testar a paginação. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+- primeiro ponto
+- segundo ponto
+> uma citação
+18/09/26, 22:16 - Rui Costa: Boa noite! 🌙

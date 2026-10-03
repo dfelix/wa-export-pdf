@@ -1,0 +1,32 @@
+<!doctype html>
+{% import "icons.html" as icons %}
+{% from "message.html" import message_row %}
+<html lang="{{ conv.locale }}" class="{{ 'doodle' if doodle }} page-{{ page.name }}">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<style>
+{{ font_faces }}
+@font-face{font-family:"WA Header";src:url({{ header_fonts.regular }}) format("truetype")}
+@font-face{font-family:"WA Header Medium";src:url({{ header_fonts.medium }}) format("truetype")}
+{{ page_css }}
+{% if doodle %}:root{--doodle:url("{{ doodle }}")}{% endif %}
+</style>
+{% for href in stylesheets %}
+<link rel="stylesheet" href="{{ href }}">
+{% endfor %}
+</head>
+<body>
+<main class="chat">
+{% for item in items %}
+{% if item.view == 'day' %}
+<div class="date-row"><h3 class="date-chip">{{ item.label }}</h3></div>
+{% elif item.view == 'system' %}
+<div class="system-row" id="{{ item.msg.id }}"><div class="system-chip{{ ' e2e' if item.e2e }}">{% if item.e2e %}{{ icons.lock() }}{% endif %}{{ item.text_html }}</div></div>
+{% else %}
+{{ message_row(item) }}
+{% endif %}
+{% endfor %}
+</main>
+</body>
+</html>

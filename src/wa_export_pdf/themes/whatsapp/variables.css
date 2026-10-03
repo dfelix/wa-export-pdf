@@ -1,0 +1,117 @@
+/*
+ * WhatsApp light theme - design tokens.
+ *
+ * Values follow WhatsApp Web/Desktop (2024-2025 UI). Every other stylesheet
+ * reads these custom properties, so a variant theme (dark, custom brand...)
+ * usually only needs to override this file.
+ */
+:root {
+  /* Typography --------------------------------------------------------- */
+  --font-text: "WA Roboto", "Segoe UI", "Helvetica Neue", Helvetica, Arial,
+    "Noto Sans", "Noto Sans CJK SC", "Noto Sans CJK JP", "Noto Sans CJK KR",
+    "PingFang SC", "Hiragino Sans", "Microsoft YaHei", "Yu Gothic", "Malgun Gothic",
+    "Noto Sans Arabic", "Segoe UI Historic", "Noto Sans Hebrew", "Noto Sans Devanagari",
+    "Noto Sans Thai", "Nirmala UI", "Leelawadee UI", sans-serif,
+    "WA Emoji", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+  --font-emoji: "WA Emoji", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  --font-mono: "WA Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-size: 14.2px;
+  --line-height: 19px;
+  --font-size-meta: 11px;
+  --font-size-name: 12.8px;
+  --font-size-chip: 12.5px;
+
+  /* Chat panel ----------------------------------------------------------- */
+  --chat-bg: #efeae2;
+  --doodle-size: 420px;
+
+  /* Bubbles ---------------------------------------------------------------- */
+  --bubble-in: #ffffff;
+  --bubble-out: #d9fdd3;
+  --bubble-radius: 7.5px;
+  --bubble-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+  --bubble-padding: 6px 7px 8px 9px;
+  --group-gap: 12px;          /* space between groups of messages */
+  --row-gap: 2px;             /* space between messages of one group */
+
+  --text: #111b21;
+  --text-secondary: #667781;
+  --meta-in: #667781;
+  --meta-out: #667781;
+  --link: #027eb5;
+  --tick-read: #53bdeb;
+  --tick: #8696a0;
+  --accent: #00a884;
+  --action: #008069;
+  --divider: rgba(11, 20, 26, 0.1);
+
+  /* Inner panels: quoted replies, documents, contact cards */
+  --panel-in: #f5f6f6;
+  --panel-out: #d1f4cc;
+  --quote-in: rgba(11, 20, 26, 0.05);
+  --quote-out: rgba(11, 20, 26, 0.05);
+
+  /* Media */
+  --media-radius: 6px;
+  --media-placeholder: #dfe5e7;
+  --media-placeholder-out: #c6e8c0;
+  --media-overlay: linear-gradient(to top, rgba(11, 20, 26, 0.5), rgba(11, 20, 26, 0));
+  --play-bg: rgba(11, 20, 26, 0.35);
+
+  /* Voice notes */
+  --wave-in: #c5cbcf;
+  --wave-out: #a9c9a3;
+  --wave-played: #8696a0;
+  --voice-dot-in: #8696a0;
+  --voice-dot-out: #8696a0;
+  --voice-play: #8696a0;
+  --mic: #8696a0;
+  --audio-file-icon: #ff8f2c;
+
+  /* Reactions */
+  --reaction-bg: #ffffff;
+  --reaction-border: #efeae2;
+
+  /* Chips: date separators and system notices ------------------------------ */
+  --chip-bg: #ffffff;
+  --chip-text: #54656f;
+  --chip-radius: 7.5px;
+  --chip-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+  --date-transform: uppercase;
+  --e2e-bg: #ffeecd;
+  --e2e-text: #54656f;
+  --e2e-link: #027eb5;
+
+  /* Header (app bar) ------------------------------------------------------- */
+  --header-bg: #f0f2f5;
+  --header-text: #111b21;
+  --header-sub: #667781;
+  --header-icon: #54656f;
+  --header-border: #d1d7db;
+
+  /* Default avatar */
+  --avatar-bg: #dfe5e7;
+  --avatar-fg: #ffffff;
+
+  /* Participant name colours (WhatsApp uses a fixed palette) ---------------- */
+  --name-0: #1f7aec;
+  --name-1: #e542a3;
+  --name-2: #029d00;
+  --name-3: #c4532d;
+  --name-4: #a62c71;
+  --name-5: #127c8d;
+  --name-6: #7f66ff;
+  --name-7: #d3396d;
+  --name-8: #0c8f80;
+  --name-9: #ba33dc;
+  --name-10: #1d82a7;
+  --name-11: #b4876e;
+  --name-12: #ad4d00;
+  --name-13: #3a8e46;
+  --name-14: #e5534b;
+  --name-15: #5a7af0;
+  --name-16: #9b6d00;
+  --name-17: #c44c9e;
+  --name-18: #00796b;
+  --name-19: #8f5cbb;
+}

@@ -1,0 +1,185 @@
+/* Photos, videos, GIFs, stickers, voice notes, audio files and documents. */
+
+.bubble.media-bubble { padding: 3px; }
+
+.media-frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--media-radius);
+  background: var(--media-placeholder);
+  break-inside: avoid;
+}
+.row.out .media-frame { background: var(--media-placeholder-out); }
+.media-frame img.thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.media-frame.crop img.thumb { object-position: center; }
+
+/* Time drawn over the picture when there is no caption */
+.media-frame .shade {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 28px;
+  background: var(--media-overlay);
+}
+.bubble.media-bubble .meta.overlay { color: #fff; right: 10px; bottom: 7px; }
+.bubble.media-bubble .meta.overlay .ticks { color: #fff; }
+
+/* Caption */
+.caption { padding: 5px 4px 5px 6px; max-width: var(--media-w); box-sizing: border-box; }
+
+/* Video / GIF overlays */
+.play {
+  position: absolute; left: 50%; top: 50%;
+  width: 50px; height: 50px; margin: -25px 0 0 -25px;
+  border-radius: 50%;
+  background: var(--play-bg);
+  display: flex; align-items: center; justify-content: center;
+}
+.play svg { width: 22px; height: 22px; margin-left: 3px; color: #fff; }
+.gif-badge {
+  position: absolute; left: 50%; top: 50%;
+  width: 50px; height: 50px; margin: -25px 0 0 -25px;
+  border-radius: 50%; background: var(--play-bg); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; letter-spacing: 0.5px;
+}
+.video-info {
+  position: absolute; left: 7px; bottom: 6px;
+  display: flex; align-items: center; gap: 4px;
+  color: #fff; font-size: var(--font-size-meta); line-height: 15px;
+}
+.video-info svg { width: 16px; height: 11px; }
+
+/* Missing / unreadable media */
+.media-missing {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px;
+  width: 100%; height: 100%;
+  color: #54656f;
+  text-align: center;
+  padding: 10px 14px;
+  box-sizing: border-box;
+}
+.media-missing svg { width: 34px; height: 34px; opacity: 0.7; }
+.media-missing .fname { font-size: 12.5px; line-height: 16px; overflow-wrap: anywhere; color: var(--text); }
+.media-missing .why { font-size: 11.5px; line-height: 15px; }
+
+/* Stickers ------------------------------------------------------------------- */
+.sticker { position: relative; display: block; }
+.sticker img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.bubble.bubbleless .meta.sticker-meta {
+  position: absolute;
+  right: 4px; bottom: 4px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: rgba(11, 20, 26, 0.35);
+  color: #fff;
+}
+.bubble.bubbleless .meta.sticker-meta .ticks { color: #fff; }
+
+/* Voice notes ---------------------------------------------------------------- */
+.bubble.voice-bubble { padding: 5px 7px 6px 7px; }
+.voice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: var(--voice-w);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.voice .avatar-wrap { position: relative; width: 48px; height: 48px; flex: 0 0 48px; }
+.voice .avatar-wrap .avatar { width: 48px; height: 48px; }
+.voice .mic {
+  position: absolute; bottom: -2px; width: 18px; height: 18px; color: var(--mic);
+}
+.row.in .voice .mic { right: -4px; }
+.row.out .voice .mic { left: -4px; }
+.voice .mic svg { width: 18px; height: 18px; display: block; }
+.voice .play-btn { width: 24px; height: 24px; flex: 0 0 24px; color: var(--voice-play); }
+.voice .play-btn svg { width: 24px; height: 24px; display: block; }
+.voice .track { flex: 1; min-width: 0; position: relative; padding-top: 14px; }
+.waveform {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 26px;
+}
+.waveform .bar {
+  width: 3px;
+  border-radius: 2px;
+  background: var(--wave-in);
+  min-height: 3px;
+}
+.row.out .waveform .bar { background: var(--wave-out); }
+.waveform .dot {
+  position: absolute; left: -2px; top: 50%;
+  width: 12px; height: 12px; margin-top: -6px; border-radius: 50%;
+  background: var(--voice-dot-in);
+}
+.row.out .waveform .dot { background: var(--voice-dot-out); }
+.waveform.flat .bar { height: 3px !important; }
+.voice .v-duration {
+  font-size: var(--font-size-meta);
+  line-height: 15px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  height: 15px;
+}
+.voice-bubble .meta { bottom: 5px; }
+.voice-bubble.out-avatar .meta { right: 66px; }
+
+/* Audio files (music, recordings sent as files) */
+.audio-icon {
+  width: 48px; height: 48px; flex: 0 0 48px; border-radius: 50%;
+  background: var(--audio-file-icon); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.audio-icon svg { width: 26px; height: 26px; }
+.audio-line {
+  position: relative; height: 4px; border-radius: 2px; margin: 11px 0;
+  background: var(--wave-in);
+}
+.row.out .audio-line { background: var(--wave-out); }
+.audio-line .dot {
+  position: absolute; left: -2px; top: -4px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--voice-dot-in);
+}
+
+/* Documents ------------------------------------------------------------------- */
+.bubble.document-bubble { padding: 3px; }
+.doc {
+  width: var(--media-w);
+  max-width: 100%;
+  box-sizing: border-box;
+  border-radius: var(--media-radius);
+  background: var(--panel-in);
+  overflow: hidden;
+}
+.row.out .doc { background: var(--panel-out); }
+.doc .doc-preview {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-bottom: 1px solid var(--divider);
+  background: #fff;
+}
+.doc .doc-row { display: flex; align-items: center; gap: 10px; padding: 12px 12px 12px 10px; }
+.doc .doc-icon { width: 26px; height: 32px; flex: 0 0 26px; position: relative; }
+.doc .doc-icon svg { width: 26px; height: 32px; display: block; }
+.doc .doc-icon .ext {
+  position: absolute; left: 0; right: 0; bottom: 4px;
+  text-align: center; font-size: 7px; font-weight: 700; color: #fff; line-height: 8px;
+}
+.doc .doc-name { font-size: 14.2px; line-height: 19px; overflow-wrap: anywhere; color: var(--text); }
+.doc-meta-line { font-size: var(--font-size-meta); line-height: 15px; color: var(--text-secondary); padding: 4px 4px 4px 6px; }
+.doc-icon.pdf { color: #e5252a; }
+.doc-icon.word { color: #2a5699; }
+.doc-icon.excel { color: #1f7244; }
+.doc-icon.ppt { color: #d24726; }
+.doc-icon.zip { color: #8a6d3b; }
+.doc-icon.generic, .doc-icon.text, .doc-icon.apk { color: #8696a0; }

@@ -1,0 +1,36 @@
+/* System notices: encryption notice, group events, security codes... */
+
+.system-row {
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--lane-pad);
+  margin: 10px 0 4px;
+  break-inside: avoid;
+}
+.system-chip {
+  max-width: 82%;
+  padding: 5px 12px 6px;
+  border-radius: var(--chip-radius);
+  background: var(--chip-bg);
+  box-shadow: var(--chip-shadow);
+  color: var(--chip-text);
+  font-size: var(--font-size-chip);
+  line-height: 18px;
+  text-align: center;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.system-chip.e2e {
+  background: var(--e2e-bg);
+  color: var(--e2e-text);
+  max-width: 76%;
+  padding: 6px 12px 7px;
+}
+.system-chip.e2e .lock {
+  display: inline-block;
+  width: 10px;
+  height: 12px;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+.system-chip.e2e strong { font-weight: 400; color: var(--e2e-link); }

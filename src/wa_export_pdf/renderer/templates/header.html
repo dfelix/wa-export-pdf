@@ -1,0 +1,19 @@
+{% import "icons.html" as icons %}
+<style>
+@font-face{font-family:"WA Header";src:url({{ header_fonts.regular }}) format("truetype")}
+@font-face{font-family:"WA Header Medium";src:url({{ header_fonts.medium }}) format("truetype")}
+{{ css }}
+{% if doodle %}:root{--doodle:url("{{ doodle }}")}{% endif %}
+</style>
+<div class="page-fill{{ ' doodle' if doodle }}" style="height:{{ height }}px">
+{% if show_bar %}
+  <div class="appbar" style="height:{{ bar_height }}px">
+    <span class="avatar">{% if conv.is_group %}{{ icons.group_avatar() }}{% else %}{{ icons.avatar() }}{% endif %}</span>
+    <div class="titles">
+      <div class="title">{{ title }}</div>
+      {% if subtitle %}<div class="subtitle">{{ subtitle }}</div>{% endif %}
+    </div>
+    <div class="icons">{{ icons.video_header() }}{{ icons.search() }}{{ icons.kebab() }}</div>
+  </div>
+{% endif %}
+</div>

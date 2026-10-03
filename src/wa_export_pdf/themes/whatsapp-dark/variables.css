@@ -1,0 +1,78 @@
+/*
+ * WhatsApp dark theme - only the tokens that differ from the light theme.
+ * Loaded after themes/whatsapp/variables.css.
+ */
+:root {
+  --chat-bg: #0b141a;
+
+  --bubble-in: #202c33;
+  --bubble-out: #005c4b;
+  --bubble-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+
+  --text: #e9edef;
+  --text-secondary: #8696a0;
+  --meta-in: #8696a0;
+  --meta-out: rgba(233, 237, 239, 0.6);
+  --link: #53bdeb;
+  --accent: #00a884;
+  --action: #00a884;
+  --divider: rgba(233, 237, 239, 0.12);
+
+  --panel-in: #1d282f;
+  --panel-out: #025144;
+  --quote-in: rgba(255, 255, 255, 0.05);
+  --quote-out: rgba(0, 0, 0, 0.12);
+
+  --media-placeholder: #2a3942;
+  --media-placeholder-out: #0a6b59;
+
+  --wave-in: #53636d;
+  --wave-out: #4c8e80;
+  --voice-dot-in: #8696a0;
+  --voice-dot-out: #9cc6bd;
+  --voice-play: #aebac1;
+  --mic: #8696a0;
+
+  --reaction-bg: #202c33;
+  --reaction-border: #0b141a;
+
+  --chip-bg: #182229;
+  --chip-text: #8696a0;
+  --e2e-bg: #182229;
+  --e2e-text: #ffd279;
+  --e2e-link: #53bdeb;
+
+  --header-bg: #202c33;
+  --header-text: #e9edef;
+  --header-sub: #8696a0;
+  --header-icon: #aebac1;
+  --header-border: #2a3942;
+
+  --avatar-bg: #6a7175;
+  --avatar-fg: #cfd4d6;
+
+  --name-0: #53bdeb;
+  --name-1: #ff72a1;
+  --name-2: #25d366;
+  --name-3: #fc9775;
+  --name-4: #d685ff;
+  --name-5: #42c7b8;
+  --name-6: #a5b6ff;
+  --name-7: #ff8f8f;
+  --name-8: #06cf9c;
+  --name-9: #e0a2ff;
+  --name-10: #7ed3f7;
+  --name-11: #ffbc38;
+  --name-12: #f5a65b;
+  --name-13: #8ee18a;
+  --name-14: #ff8a80;
+  --name-15: #8fb2ff;
+  --name-16: #e3c25a;
+  --name-17: #f59dd2;
+  --name-18: #4dd0c0;
+  --name-19: #c3a1f2;
+}
+.text code.inline-code { background: rgba(255, 255, 255, 0.08); }
+.text .wa-quote { border-left-color: rgba(233, 237, 239, 0.35); }
+.poll .p-track, .call .call-icon { background: rgba(255, 255, 255, 0.1); }
+.doc .doc-preview { background: #fff; }

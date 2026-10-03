@@ -1,0 +1,53 @@
+/* App bar drawn by Chromium in the top margin of every page, and the fill
+   of the bottom margin. Rendered in an isolated document: only this file
+   and variables.css are available here. */
+
+html, body { margin: 0; padding: 0; }
+#header, #footer { padding: 0 !important; margin: 0 !important; }
+
+.page-fill {
+  width: 100%;
+  background-color: var(--chat-bg);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.page-fill.doodle {
+  background-image: var(--doodle);
+  background-size: var(--doodle-size) var(--doodle-size);
+}
+
+.appbar {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 0 16px;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  font-family: "WA Header", "Segoe UI", "Helvetica Neue", Helvetica, Arial, "Noto Sans", sans-serif;
+  color: var(--header-text);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.appbar .avatar { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%; overflow: hidden; }
+.appbar .avatar svg { width: 40px; height: 40px; display: block; }
+.appbar .titles { flex: 1; min-width: 0; }
+.appbar .title {
+  font-family: "WA Header Medium", "WA Header", "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 21px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.appbar .subtitle {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--header-sub);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.appbar .icons { display: flex; gap: 22px; color: var(--header-icon); }
+.appbar .icons svg { width: 24px; height: 24px; display: block; }

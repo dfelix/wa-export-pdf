@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wa-export-pdf"
+version = "1.0.0"
+description = "Convert a WhatsApp chat export into a PDF that looks like WhatsApp itself."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "wa-export-pdf contributors" }]
+keywords = ["whatsapp", "pdf", "export", "backup", "chat"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: Communications :: Chat",
+]
+dependencies = [
+    "playwright>=1.42",
+    "jinja2>=3.1",
+    "pillow>=10.0",
+    "pypdf>=4.0",
+]
+
+[project.optional-dependencies]
+# Bundled FFmpeg binary for Windows/macOS/Linux (video frames, audio waveforms).
+ffmpeg = ["imageio-ffmpeg>=0.5"]
+# PDF document previews and PNG page screenshots in --debug mode.
+preview = ["pypdfium2>=4.20"]
+all = ["imageio-ffmpeg>=0.5", "pypdfium2>=4.20"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+wa-export-pdf = "wa_export_pdf.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+wa_export_pdf = [
+    "fonts/*",
+    "themes/*/*",
+    "themes/*/assets/*",
+    "renderer/templates/*",
+    "renderer/templates/*/*",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "chromium: needs the Playwright Chromium browser",
+    "ffmpeg: needs an FFmpeg executable",
+]

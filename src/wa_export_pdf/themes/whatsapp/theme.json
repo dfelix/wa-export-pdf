@@ -1,0 +1,19 @@
+{
+  "name": "WhatsApp (light)",
+  "extends": null,
+  "dark": false,
+  "stylesheets": [
+    "variables.css",
+    "base.css",
+    "bubbles.css",
+    "messages.css",
+    "media.css",
+    "dates.css",
+    "system.css"
+  ],
+  "header_stylesheets": [
+    "variables.css",
+    "header.css"
+  ],
+  "doodle": "assets/doodle.png"
+}

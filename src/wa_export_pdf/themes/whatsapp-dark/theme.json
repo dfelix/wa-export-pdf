@@ -1,0 +1,8 @@
+{
+  "name": "WhatsApp (dark)",
+  "extends": "whatsapp",
+  "dark": true,
+  "stylesheets": ["variables.css"],
+  "header_stylesheets": ["variables.css"],
+  "doodle": "assets/doodle.png"
+}

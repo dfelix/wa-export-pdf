@@ -1,0 +1,5 @@
+<style>
+{{ css }}
+{% if doodle %}:root{--doodle:url("{{ doodle }}")}{% endif %}
+</style>
+<div class="page-fill{{ ' doodle' if doodle }}" style="height:{{ height }}px"></div>

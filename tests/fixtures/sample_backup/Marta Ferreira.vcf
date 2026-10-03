@@ -1,0 +1,7 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Ferreira;Marta;;;
+FN:Marta Ferreira
+item1.TEL;waid=351910000000:+351 910 000 000
+item1.X-ABLabel:Telemóvel
+END:VCARD
