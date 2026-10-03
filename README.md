@@ -116,12 +116,21 @@ wa-export-pdf "WhatsApp Chat with Ana.zip" ana.pdf --page-size phone --theme wha
 # group chat: say who "me" is (messages on the right)
 wa-export-pdf ./group group.pdf --me "Alex Doe"
 
-# a date range only, without media
-wa-export-pdf ./backup excerpt.pdf --from 2025-01-01 --to 2025-03-31 --no-media
+# only a period (both ends inclusive; times are optional)
+wa-export-pdf ./backup march.pdf --from 2025-03-01 --to 2025-03-31
+wa-export-pdf ./backup evening.pdf --from "2025-03-10 18:00" --to "2025-03-10 23:30"
 
 # visual validation: HTML + JSON + PNG page renders
 wa-export-pdf ./backup chat.pdf --debug --screenshots 20
 ```
+
+**Periods.** `--from` and `--to` accept `YYYY-MM-DD`, `"YYYY-MM-DD HH:MM"` or
+`"YYYY-MM-DD HH:MM:SS"`; either can be omitted. Both ends are inclusive: a
+`--to` date covers that whole day and `--to "… 18:05"` the whole minute. The
+period is applied right after parsing, so only the attachments inside it are
+processed (one month of a 32,000-message chat converts in ~5 s instead of
+~2 min). An invalid or empty period stops with an error that shows the dates
+the chat actually covers.
 
 **Who is "me"?** In a one-to-one chat exported as `WhatsApp Chat with Ana.txt`
 (or the localised equivalents, e.g. `Conversa no WhatsApp com Ana.txt`), the
@@ -144,7 +153,7 @@ every message is shown as received and a warning is printed.
 | `--title TEXT` | title shown in the top bar and the PDF metadata |
 | `--css FILE` | extra CSS applied after the theme (repeatable) |
 | `--me NAME` | your name exactly as it appears in the chat |
-| `--from` / `--to YYYY-MM-DD` | date range |
+| `--from` / `--to DATE[ TIME]` | period to include, inclusive (`YYYY-MM-DD` or `"YYYY-MM-DD HH:MM[:SS]"`) |
 | `--date-order auto\|dmy\|mdy\|ymd` | date format of the export (auto-detected) |
 | `--lang pt\|pt-BR\|en\|es\|fr\|de\|it` | language of UI labels (auto-detected) |
 | `--include-media` / `--no-media` | embed media (default) or show placeholders |
@@ -418,7 +427,7 @@ Bundled files (see `THIRD_PARTY_NOTICES.md`):
 python -m venv .venv && . .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -e ".[all,dev]"
 python -m playwright install chromium
-pytest                    # 86 tests; PDF tests are skipped if Chromium is missing
+pytest                    # 102 tests; PDF tests are skipped if Chromium is missing
 ```
 
 * `tests/test_parser.py` — simple, multi-line, Unicode, emoji, accented names,
@@ -430,6 +439,8 @@ pytest                    # 86 tests; PDF tests are skipped if Chromium is missi
   waveform, PDF, vCard, unknown and missing files.
 * `tests/test_renderer.py` — formatting, HTML escaping, links, emoji, groups,
   date chips, names, replies/reactions, nothing invented, themes, chunks.
+* `tests/test_period.py` — `--from`/`--to` parsing, inclusive day/minute/second
+  ends, open ends, invalid and empty periods, media outside the period skipped.
 * `tests/test_pdf.py` — PDF created, searchable text, links, bookmarks, real
   images, CLI with debug/phone/dark, `--no-media`, chunk merging.
 

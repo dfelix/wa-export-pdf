@@ -16,6 +16,7 @@ from .config import RenderOptions
 from .media import MediaCache, MediaIndex, MediaSettings, QUALITY_PRESETS, find_ffmpeg, process_media, resolve_media
 from .models import Conversation
 from .parser import ParseOptions, locate_export, parse_file
+from .period import Period, apply_period
 from .pdf import ChromiumRenderer, PdfJob, merge_pdfs, render_pdf_pages_png
 from .renderer.html import HtmlRenderer
 from .renderer.theme import load_theme
@@ -27,6 +28,7 @@ log = logging.getLogger(__name__)
 class ConvertOptions:
     parse: ParseOptions = field(default_factory=ParseOptions)
     render: RenderOptions = field(default_factory=RenderOptions)
+    period: Period = field(default_factory=Period)
     quality: str = "medium"
     ffmpeg: str | None = None
     waveforms: bool = True
@@ -97,6 +99,12 @@ def convert(source: Path, output: Path | None, options: ConvertOptions) -> Conve
             "Parsed %d messages, %d participants (you: %s), language: %s",
             len(conv.messages), len(conv.participants), me, conv.locale,
         )
+        if options.period.active:
+            dropped = apply_period(conv, options.period)
+            log.info(
+                "Period %s: %d messages kept, %d left out",
+                options.period.describe(), len(conv.messages), dropped,
+            )
         for w in conv.warnings[:20]:
             log.warning(w)
         if len(conv.warnings) > 20:

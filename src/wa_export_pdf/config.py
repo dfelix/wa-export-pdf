@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date
 from pathlib import Path
 
 
@@ -50,8 +49,6 @@ class RenderOptions:
     include_media: bool = True
     chunk_size: int = 2000             # messages per Chromium render pass
     title: str | None = None
-    date_from: date | None = None
-    date_to: date | None = None
     extra_css: list[Path] = field(default_factory=list)
 
     @property
